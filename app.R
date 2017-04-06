@@ -13,9 +13,7 @@ as.numeric.factor <- function(x) {as.numeric(levels(x))[x]}
 #Javascript Conditional Formatting 
 
 script <- "$('tbody tr td:nth-child(7)').each(function() {
-
 var cellValue = $(this).text();
-
 if (cellValue > 0) {
 $(this).css('background-color', '#0c0');
 }
@@ -65,20 +63,23 @@ dates$End_date <- mdy(dates$End_date)
 
 
 ui <- fluidPage(theme = shinytheme("cerulean"),
-                h1("Goal Progress Report", align="center"),
-                h2("Summary of Goal Progress by Project", align="center"),
                 fluidRow(
                   column(2, 
-                         img(src="bdtlogo.png", width="90%", height=100, align="left"),
-                         h5("Last Updated 02/23/17", align="left"),
+                         img(src="bdtlogo.png", width="100%", height=100, align="center")),
+                  column(10,
+                         h1("Goal Progress Report", align="center"),
+                         h2("Summary of Goal Progress by Project", align="center"))),
+                fluidRow(
+                  column(12, 
+                         h4("Last Updated 02/23/17", align="left"),
+                         div(uiOutput("Test1", width="100%", align="center"),style="font-size:100%"))),
+                fluidRow(
+                  column(2,  
                          uiOutput("GoalOutput", width="100%"),
                          uiOutput("dates",width="100%")),
-                  column(10,
-                         div(uiOutput("Test1", width="90%"),style="font-size:82%"))),
-                fluidRow(
                   column(4,
                          plotOutput("secondplot")),
-                  column(8,
+                  column(6,
                          (plotOutput("coolplot")))
                 ))
 
@@ -104,7 +105,7 @@ server <- function(input, output, session) {
   
   
   output$GoalOutput <- renderUI({
-    selectInput("GoalInput", "Goal",
+    selectInput("GoalInput", "Choose a Project you want to track:",
                 sort(unique(report_data$goal)),
                 selected = "FastTrack")})  
   
